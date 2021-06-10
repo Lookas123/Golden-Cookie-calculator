@@ -38,7 +38,7 @@ for(let p = -1; p<chances.length; p++){
         let chanceforpool=1;   
         let poolcount=0;
         for(let a=0; a<chances.length;a++){
-            let chance = chances[a]*(p==a&&p!=7?0.2:1);
+            let chance = chances[a]*((p==a&&p!=7)?0.2:1);
             chanceforpool*=pool[a]?chance:1-chance
             poolcount+=pool[a];
         }
@@ -52,29 +52,29 @@ for(let p = -1; p<chances.length; p++){
     output[a+4]=undefined;
 }*/
 header+="<th> Golden Cookie, Previous: " + effectnames[p] + "</th>"
-outputarray[outputarray.length]=output
+outputarray[outputarray.length]=[...output]
 if(p>-1) dchances[p]=output;
 else basechances=output
 }
 
-for(let p = -1; p<chances.length; p++){
+for(let p = -1; p<wchances.length; p++){
     let output = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    for(let i=0; i<2**chances.length-1;i++){
+    for(let i=0; i<2**wchances.length-1;i++){
         let pool=[];
         let n=i;
-        for(let a=0; a<chances.length;a++){
+        for(let a=0; a<wchances.length;a++){
             n-=(pool[a]=n%2);
             n/=2;
         }
         let chanceforpool=1;   
         let poolcount=0;
-        for(let a=0; a<chances.length;a++){
+        for(let a=0; a<wchances.length;a++){
             let chance = wchances[a]*(p==a&&p!=7?0.2:1);
             chanceforpool*=pool[a]?chance:1-chance
             poolcount+=pool[a];
         }
         //console.log(chanceforpool, poolcount, pool)
-        for(let a=0; a<chances.length;a++){
+        for(let a=0; a<wchances.length;a++){
             if(pool[a]) output[a]+=chanceforpool/poolcount
         }
     }
@@ -83,7 +83,7 @@ for(let p = -1; p<chances.length; p++){
     output[a+4]=undefined;
 }*/
 header+="<th> Wrath Cookie, Previous: " + effectnames[p] + "</th>"
-outputarray[outputarray.length]=output;
+outputarray[outputarray.length]=[...output];
 if(p>-1) dwchances[p]=output;
 else basewchances=output
 }
@@ -109,9 +109,10 @@ outputarray[outputarray.length]=ebasechances;
 for (let i = 0; i < outputarray[0].length; i++) {
     content += "<tr>"
     for (let a = 0; a < outputarray.length; a++) {
-        content += "<td>"+outputarray[a][i]+"</td>";
+        content += "<td>"+ (a>0?Number(outputarray[a][i]).toFixed(7):outputarray[a][i])+"</td>";
     }
     content += "</tr>"
 }
 output.innerHTML = "<table border = 1px>"+header+content+"</table>";
+console.log(outputarray)
 }
