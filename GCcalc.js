@@ -18,8 +18,8 @@ let emg = emgtoggle.checked;
 let dfactive = dfactivetoggle.checked;
 let skruuia = skruuiatoggle.checked;
 let gpocstage = gpocinput.value;
-let chances = [1,1,cbt?0.03:0,cbt?0.03:0,dfactive?0.1:0.05,bs?0.25:0,0.0005,0.0001,dh?0.15:(rb?0.015:0),df?0.15:(rb?0.015:0),emg?0.05:0,0,0,0,0,0,0,0,0];
-let wchances = [0,1,cbt?0.321:0.3,cbt?0.321:0.3,dfactive?0.1:0.05,bs?0.25:0,0.0005,0.0001,dh?0.05:(rb?0.005:0),df?0.05:(rb?0.005:0),emg?0.05:0,1,1,0.3,0.1,skruuia?1:0,skruuia?1:0,skruuia?1:0,skruuia?1:0]
+let chances = [1,1,cbt?0.03:0,cbt?0.03:0,dfactive?0.1:0.05,bs?0.25:0,0.0005,0.0001,dh?0.15:(rb?0.015:0),df?0.15:(rb?0.015:0),emg?0.05:0];
+let wchances = [1,cbt?0.321:0.3,cbt?0.321:0.3,dfactive?0.1:0.05,bs?0.25:0,0.0005,0.0001,dh?0.05:(rb?0.005:0),df?0.05:(rb?0.005:0),emg?0.05:0,1,1,0.3,0.1,skruuia?1:0,skruuia?1:0,skruuia?1:0,skruuia?1:0]
 let dchances=[];
 let dwchances=[];
 let basechances=[];
@@ -29,7 +29,7 @@ let outputarray = [effectnames];
 let header = "<tr><th>Outcome</th>"
 let content = ""
 for(let p = -1; p<chances.length; p++){
-    let output = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    let output = [0,0,0,0,0,0,0,0,0,0,0]
     for(let i=0; i<2**chances.length-1;i++){
         let pool=[];
         let n=i;
@@ -54,13 +54,14 @@ for(let p = -1; p<chances.length; p++){
     output[a+4]=undefined;
 }*/
 header+="<th> Golden Cookie, Previous: " + effectnames[p] + "</th>"
+output.push(0,0,0,0,0,0,0,0)
 outputarray[outputarray.length]=[...output]
 if(p>-1) dchances[p]=output;
 else basechances=output
 }
 
 for(let p = -1; p<wchances.length; p++){
-    let output = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    let output = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     for(let i=0; i<2**wchances.length-1;i++){
         let pool=[];
         let n=i;
@@ -84,7 +85,8 @@ for(let p = -1; p<wchances.length; p++){
     output[a]+=output[a+4]
     output[a+4]=undefined;
 }*/
-header+="<th> Wrath Cookie, Previous: " + effectnames[p] + "</th>"
+header+="<th> Wrath Cookie, Previous: " + effectnames[p>-1?p+1:-1] + "</th>"
+output.unshift(0);
 outputarray[outputarray.length]=[...output];
 if(p>-1) dwchances[p]=output;
 else basewchances=output
