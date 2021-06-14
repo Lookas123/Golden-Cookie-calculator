@@ -18,7 +18,7 @@ let emg = emgtoggle.checked;
 let dfactive = dfactivetoggle.checked;
 let skruuia = skruuiatoggle.checked;
 let gpocstage = gpocinput.value;
-let chances = [1,1,cbt?0.03:0,cbt?0.03:0,dfactive?0.1:0.05,bs?0.25:0,0.0005,0.0001,dh?0.15:(rb?0.015:0),df?0.15:(rb?0.015:0),emg?0.05:0];
+let chances = [1,1,cbt?0.03:0,cbt?0.03:0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,dh?0.15:(rb?0.015:0),df?0.15:(rb?0.015:0),emg?0.05:0];
 let wchances = [1,cbt?0.321:0.3,cbt?0.321:0.3,dfactive?0.1:0.05,bs?0.25:0,0.0005,0.0001,dh?0.05:(rb?0.005:0),df?0.05:(rb?0.005:0),emg?0.05:0,1,1,0.3,0.1,skruuia?1:0,skruuia?1:0,skruuia?1:0,skruuia?1:0]
 let dchances=[];
 let dwchances=[];
@@ -28,8 +28,9 @@ let effectnames = ["<b>frenzy</b>", "<b>lucky</b>", "<b>storm</b>", "<b>chain</b
 let outputarray = [effectnames];
 let header = "<tr><th>Outcome</th>"
 let content = ""
-for(let p = -1; p<chances.length; p++){
+for(let p = -1; p<effectnames.length; p++){    
     let output = [0,0,0,0,0,0,0,0,0,0,0]
+    if(p<chances.length){
     for(let i=0; i<2**chances.length-1;i++){
         let pool=[];
         let n=i;
@@ -49,19 +50,17 @@ for(let p = -1; p<chances.length; p++){
             if(pool[a]) output[a]+=chanceforpool/poolcount
         }
     }
-/*for(let a = 7; a>-1; a--){
-    output[a]+=output[a+4]
-    output[a+4]=undefined;
-}*/
-header+="<th> Golden Cookie, Previous: " + effectnames[p] + "</th>"
-output.push(0,0,0,0,0,0,0,0)
-outputarray[outputarray.length]=[...output]
+    header+="<th> Golden Cookie, Previous: " + effectnames[p] + "</th>"
+    output.push(0,0,0,0,0,0,0,0)
+    outputarray[outputarray.length]=[...output]
+    } else output = [...basechances]
 if(p>-1) dchances[p]=output;
 else basechances=output
 }
 
-for(let p = -1; p<wchances.length; p++){
+for(let p = -1; p<effectnames.length; p++){
     let output = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    if (p>=effectnames.length-wchances.length||p<0){
     for(let i=0; i<2**wchances.length-1;i++){
         let pool=[];
         let n=i;
@@ -72,7 +71,7 @@ for(let p = -1; p<wchances.length; p++){
         let chanceforpool=1;   
         let poolcount=0;
         for(let a=0; a<wchances.length;a++){
-            let chance = wchances[a]*(p==a&&p!=7?0.2:1);
+            let chance = wchances[a]*(p-1==a&&p!=8?0.2:1);
             chanceforpool*=pool[a]?chance:1-chance
             poolcount+=pool[a];
         }
@@ -85,24 +84,27 @@ for(let p = -1; p<wchances.length; p++){
     output[a]+=output[a+4]
     output[a+4]=undefined;
 }*/
-header+="<th> Wrath Cookie, Previous: " + effectnames[p>-1?p+1:-1] + "</th>"
+header+="<th> Wrath Cookie, Previous: " + effectnames[p] + "</th>"
 output.unshift(0);
 outputarray[outputarray.length]=[...output];
+    } else output = [...basewchances]
 if(p>-1) dwchances[p]=output;
 else basewchances=output
 }
 let echances = dchances;
 let ebasechances = basechances;
-for(let i = 0; i < chances.length;i++){
-    for(let a = 0; a < chances.length;a++){
+console.log(dchances, basewchances)
+for(let i = 0; i < effectnames.length;i++){
+    for(let a = 0; a < effectnames.length;a++){
         echances[a][i]=dchances[a][i]*(1-gpocstage/3)+dwchances[a][i]*gpocstage/3
     }
     ebasechances[i]=basechances[i]*(1-gpocstage/3)+basewchances[i]*gpocstage/3
 }
+console.log(basechances[11]+basewchances[11], basechances[12]+basewchances[12])
 for(let loop = 0; loop < 1000; loop++){
 let c = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-for(let i = 0; i < chances.length;i++){
-    for(let a = 0; a < chances.length;a++){
+for(let i = 0; i < effectnames.length;i++){
+    for(let a = 0; a < effectnames.length;a++){
         c[i]+=echances[a][i]*ebasechances[a]
     }
 }
