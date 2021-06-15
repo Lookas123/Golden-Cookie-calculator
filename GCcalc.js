@@ -19,7 +19,9 @@ let dfactive = dfactivetoggle.checked;
 let skruuia = skruuiatoggle.checked;
 let gpocstage = gpocinput.value;
 let chances = [1,1,cbt?0.03:0,cbt?0.03:0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,dh?0.15:(rb?0.015:0),df?0.15:(rb?0.015:0),emg?0.05:0];
-let wchances = [1,cbt?0.321:0.3,cbt?0.321:0.3,dfactive?0.1:0.05,bs?0.25:0,0.0005,0.0001,dh?0.05:(rb?0.005:0),df?0.05:(rb?0.005:0),emg?0.05:0,1,1,0.3,0.1,skruuia?1:0,skruuia?1:0,skruuia?1:0,skruuia?1:0]
+let wchances = [1,cbt?0.321:0.3,cbt?0.321:0.3,dfactive?0.1:0.05,bs?0.25:0,0.0005,0.0001,dh?0.05:(rb?0.005:0),df?0.05:(rb?0.005:0),emg?0.05:0,1,1,0.3,0.1]
+if(skruuia) wchances.push(1,1,1,1)
+console.log(wchances);
 let dchances=[];
 let dwchances=[];
 let basechances=[];
@@ -60,7 +62,7 @@ else basechances=output
 
 for(let p = -1; p<effectnames.length; p++){
     let output = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    if (p>=effectnames.length-wchances.length||p<0){
+    if (p>=effectnames.length-wchances.length||p<0&&p<wchances.length*2-effectnames.length){
     for(let i=0; i<2**wchances.length-1;i++){
         let pool=[];
         let n=i;
@@ -86,6 +88,7 @@ for(let p = -1; p<effectnames.length; p++){
 }*/
 header+="<th> Wrath Cookie, Previous: " + effectnames[p] + "</th>"
 output.unshift(0);
+if(!skruuia) output.push(0,0,0,0)
 outputarray[outputarray.length]=[...output];
     } else output = [...basewchances]
 if(p>-1) dwchances[p]=output;
