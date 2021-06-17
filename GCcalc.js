@@ -33,7 +33,7 @@ let content = ""
 for(let p = -1; p<effectnames.length; p++){    
     let output = [0,0,0,0,0,0,0,0,0,0,0]
     if(p<chances.length){
-    for(let i=0; i<2**chances.length-1;i++){
+    for(let i=0; i<2**chances.length;i++){
         let pool=[];
         let n=i;
         for(let a=0; a<chances.length;a++){
@@ -63,7 +63,7 @@ else basechances=output
 for(let p = -1; p<effectnames.length; p++){
     let output = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     if (p>=effectnames.length-wchances.length||p<0&&p<wchances.length*2-effectnames.length){
-    for(let i=0; i<2**wchances.length-1;i++){
+    for(let i=0; i<2**wchances.length;i++){
         let pool=[];
         let n=i;
         for(let a=0; a<wchances.length;a++){
