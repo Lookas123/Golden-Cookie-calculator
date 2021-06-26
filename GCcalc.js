@@ -18,7 +18,7 @@ let emg = emgtoggle.checked;
 let dfactive = dfactivetoggle.checked;
 let skruuia = skruuiatoggle.checked;
 let gpocstage = gpocinput.value;
-let chances = [1,1,cbt?0.03:0,cbt?0.03:0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,dh?0.15:(rb?0.015:0),df?0.15:(rb?0.015:0),emg?0.05:0];
+let chances = [1,1,cbt?0.03:0,cbt?0.03:0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,dh?0.1925:(rb?0.01925:0),df?0.1925:(rb?0.01925:0),emg?0.05:0];
 let wchances = [1,cbt?0.321:0.3,cbt?0.321:0.3,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,dh?0.05:(rb?0.005:0),df?0.05:(rb?0.005:0),emg?0.05:0,1,1,0.3,0.1]
 if(skruuia) wchances.push(1,1,1,1)
 console.log(wchances);
