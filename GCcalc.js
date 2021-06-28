@@ -9,8 +9,8 @@ const skruuiatoggle = document.getElementById("skruuiatoggle")
 const gpocinput = document.getElementById("gpocinput")
 const output = document.getElementById("output")
 function calc() {
-let dh = dhtoggle.checked;
-let df = dftoggle.checked;
+let df = dhtoggle.checked;
+let dh = dftoggle.checked;
 let rb = rbtoggle.checked;
 let bs = bstoggle.checked;
 let cbt = cbttoggle.checked;
