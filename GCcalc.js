@@ -80,7 +80,7 @@ for(let p = -1; p<effectnames.length; p++){
                 let chanceforpool=wchances[index].p;   
                 let poolcount=0;
                 for(let a=0; a<wchances[index].c.length;a++){
-                    let chance = wchances[index].c[a]*((p==a&&p!=7)?0.2:1);
+                    let chance = wchances[index].c[a]*((p-1==a&&p!=7)?0.2:1);
                     chanceforpool*=pool[a]?chance:1-chance
                     poolcount+=pool[a];
                 }
