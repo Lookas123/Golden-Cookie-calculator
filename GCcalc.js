@@ -20,17 +20,12 @@ let skruuia = skruuiatoggle.checked;
 let gpocstage = gpocinput.value;
 let chances = [{c:[1,1,0,0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,0,0,emg?0.05:0],p:0.783275}, {c:[1,1,cbt?1:0,cbt?1:0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,0,0,emg?0.05:0],p:0.024225},{c:[1,1,0,0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0],p:0.186725},{c:[1,1,cbt?1:0,cbt?1:0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0],p:0.005775}];
 let wchances = [{c:[1,0,0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,0,0,emg?0.05:0,1,1,0,0.1],p:0.64505},{c:[1,1,1,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,0,0,emg?0.05:0,1,1,1,0.1],p:0.285}, {c:[1,cbt?1:0,cbt?1:0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,0,0,emg?0.05:0,1,1,0,0.1],p:0.01995},{c:[1,0,0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0,1,1,0,0.1],p:0.03395},{c:[1,1,1,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0,1,1,1,0.1],p:0.015}, {c:[1,cbt?1:0,cbt?1:0,dfactive?0.005:0.1,bs?0.25:0,0.0005,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0,1,1,0,0.1],p:0.00105}]
-if(skruuia) {
-    for (let index = 0; index < wchances.length; index++) {
-        wchances[index].c.push(1,1,1,1)
-    }
-}
 console.log(wchances);
 let dchances=[];
 let dwchances=[];
 let basechances=[];
 let basewchances=[];
-let effectnames = ["<b>frenzy</b>", "<b>lucky</b>", "<b>storm</b>", "<b>chain</b>", "<b>cf</b>", "<b>bs</b>", "<b>sweet</b>", "<b>blab</b>", "<b>dh</b>", "<b>df</b>", "<b>emg</b>", "<b>clot</b>", "<b>ruin</b>", "<b>ef</b>", "<b>cuf</b>", "<b>clot2</b>", "<b>clot3</b>", "<b>ruin2</b>", "<b>ruin3</b>"]
+let effectnames = ["<b>frenzy</b>", "<b>lucky</b>", "<b>storm</b>", "<b>chain</b>", "<b>cf</b>", "<b>bs</b>", "<b>sweet</b>", "<b>blab</b>", "<b>dh</b>", "<b>df</b>", "<b>emg</b>", "<b>clot</b>", "<b>ruin</b>", "<b>ef</b>", "<b>cuf</b>"]
 let outputarray = [effectnames];
 let header = "<tr><th>Outcome</th>"
 let content = ""
@@ -59,7 +54,7 @@ for(let p = -1; p<effectnames.length; p++){
         }
     }
     header+="<th> Golden Cookie, Previous: " + effectnames[p] + "</th>"
-    output.push(0,0,0,0,0,0,0,0)
+    output.push(0,0,0,0)
     outputarray[outputarray.length]=[...output]
     } else output = [...basechances]
 if(p>-1) dchances[p]=output;
@@ -77,8 +72,9 @@ for(let p = -1; p<effectnames.length; p++){
                     n-=(pool[a]=n%2);
                     n/=2;
                 }
+                if(skruuia)pool.push(1,1,1,1)
                 let chanceforpool=wchances[index].p;   
-                let poolcount=0;
+                let poolcount=skruuia*4;
                 for(let a=0; a<wchances[index].c.length;a++){
                     let chance = wchances[index].c[a]*((p-1==a&&p!=7)?0.2:1);
                     chanceforpool*=pool[a]?chance:1-chance
@@ -87,12 +83,12 @@ for(let p = -1; p<effectnames.length; p++){
                 //console.log(chanceforpool, poolcount, pool)
                 for(let a=0; a<wchances[index].c.length;a++){
                     if(pool[a]) output[a]+=chanceforpool/poolcount
+                    if((a==11||a==10)&&skruuia) output[a]+=2*chanceforpool/poolcount
                 }
             }
         }
 header+="<th> Wrath Cookie, Previous: " + effectnames[p] + "</th>"
 output.unshift(0);
-if(!skruuia) output.push(0,0,0,0)
 outputarray[outputarray.length]=[...output];
     } else output = [...basewchances]
 if(p>-1) dwchances[p]=output;
