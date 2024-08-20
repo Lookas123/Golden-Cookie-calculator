@@ -7,6 +7,8 @@ const swettoggle = document.getElementById("swettoggle")
 const emgtoggle = document.getElementById("emgtoggle")
 const dfactivetoggle = document.getElementById("dfactivetoggle")
 const skruuiatoggle = document.getElementById("skruuiatoggle")
+const stormtoggle = document.getElementById("stormtoggle")
+//const chaintoggle = document.getElementById("chaintoggle")
 const gpocinput = document.getElementById("gpocinput")
 const output = document.getElementById("output")
 function calc() {
@@ -19,9 +21,47 @@ let swet = swettoggle.checked;
 let emg = emgtoggle.checked;
 let dfactive = dfactivetoggle.checked;
 let skruuia = skruuiatoggle.checked;
+let storm = stormtoggle.checked;
+let chain = chaintoggle.checked;
 let gpocstage = gpocinput.value;
-let chances = [{c:[1,1,0,0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,0,0,emg?0.05:0],p:0.783275}, {c:[1,1,cbt?1:0,cbt?1:0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,0,0,emg?0.05:0],p:0.024225},{c:[1,1,0,0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0],p:0.186725},{c:[1,1,cbt?1:0,cbt?1:0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0],p:0.005775}];
-let wchances = [{c:[1,0,0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,0,0,emg?0.05:0,1,1,0,0.1],p:0.64505},{c:[1,1,1,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,0,0,emg?0.05:0,1,1,1,0.1],p:0.285}, {c:[1,cbt?1:0,cbt?1:0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,0,0,emg?0.05:0,1,1,0,0.1],p:0.01995},{c:[1,0,0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0,1,1,0,0.1],p:0.03395},{c:[1,1,1,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0,1,1,1,0.1],p:0.015}, {c:[1,cbt?1:0,cbt?1:0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,df?1:(rb?0.1:0),dh?1:(rb?0.1:0),emg?0.05:0,1,1,0,0.1],p:0.00105}]
+function GCodds(StoCha, DfDh) {
+    let odds = [1,1,0,0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,0,0,emg?0.05:0];
+    if(StoCha&&cbt){
+        odds[2]=1;
+        odds[3]=chain;
+    }
+    if(DfDh){
+        odds[8]=df?1:(rb?0.1:0);
+        odds[9]=dh?1:(rb?0.1:0);
+    }
+    return odds;
+} 
+function WCodds(EfStoCha, StoCha, DfDh){
+    let odds = [1,0,0,dfactive?0.005:0.1,bs?0.25:0,swet?0.0005:0,0.0001,0,0,emg?0.05:0,1,1,0,0.1];
+    if(EfStoCha){
+        odds[1]=1;
+        odds[2]=chain;
+        odds[12]=1;
+    }
+    if(StoCha&&cbt){
+        odds[1]=1;
+        odds[2]=chain;
+    }
+    if(DfDh){
+        odds[8]=df?1:(rb?0.1:0);
+        odds[9]=dh?1:(rb?0.1:0);
+    }
+    return odds;
+}
+
+
+
+let chances = [{c:GCodds(false,false),p:0.783275}, {c:GCodds(true,false),p:0.024225},{c:GCodds(false,true),p:0.186725},{c:GCodds(true,true),p:0.005775}];
+let wchances = [{c:WCodds(false,false,false),p:0.64505},{c:WCodds(true,false,false),p:0.285}, {c:WCodds(false,true,false),p:0.01995},{c:WCodds(false,false,true),p:0.03395},{c:WCodds(true,false,true),p:0.015}, {c:WCodds(false,true,true),p:0.00105}]
+
+
+
+
 console.log(wchances);
 let dchances=[];
 let dwchances=[];
@@ -31,6 +71,7 @@ let effectnames = ["<b>frenzy</b>", "<b>lucky</b>", "<b>storm</b>", "<b>chain</b
 let outputarray = [effectnames];
 let header = "<tr><th>Outcome</th>"
 let content = ""
+// GC probabilities
 for(let p = -1; p<effectnames.length; p++){    
     let output = [0,0,0,0,0,0,0,0,0,0,0]
     if(p<chances[0].c.length){
@@ -63,6 +104,7 @@ if(p>-1) dchances[p]=output;
 else basechances=output
 }
 
+//WC probabilities
 for(let p = -1; p<effectnames.length; p++){
     let output = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     if ((p>=1&&wchances[0].c[p-1]!=undefined)||p<0){
@@ -96,6 +138,8 @@ outputarray[outputarray.length]=[...output];
 if(p>-1) dwchances[p]=output;
 else basewchances=output
 }
+//Factor in gpoc stage into all the chances 
+
 let echances = dchances;
 let ebasechances = basechances;
 console.log(dchances, basewchances)
@@ -106,17 +150,25 @@ for(let i = 0; i < effectnames.length;i++){
     ebasechances[i]=basechances[i]*(1-gpocstage/3)+basewchances[i]*gpocstage/3
 }
 console.log(basechances[11]+basewchances[11], basechances[12]+basewchances[12])
+//Generate Cumulative chances by just looping over the matrix 1000 times because i'm lazy
+let cumchances = [...ebasechances]
 for(let loop = 0; loop < 1000; loop++){
 let c = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 for(let i = 0; i < effectnames.length;i++){
     for(let a = 0; a < effectnames.length;a++){
-        c[i]+=echances[a][i]*ebasechances[a]
+        if(!storm||a!==2){ 
+            c[i]+=echances[a][i]*cumchances[a]
+        }else{
+            c[i]+=ebasechances[i]*cumchances[a]
+        }
     }
 }
-ebasechances=c;
+cumchances=c;
 }
+
+//Write Table
 header+="<th>Cumulative chances</th><th>Outcome</th></tr>"
-outputarray[outputarray.length]=ebasechances;
+outputarray[outputarray.length]=cumchances;
 outputarray[outputarray.length]=(effectnames)
 for (let i = 0; i < outputarray[0].length; i++) {
     content += "<tr>"
