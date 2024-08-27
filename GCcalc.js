@@ -12,8 +12,8 @@ const stormtoggle = document.getElementById("stormtoggle")
 const gpocinput = document.getElementById("gpocinput")
 const output = document.getElementById("output")
 function calc() {
-let df = dhtoggle.checked;
-let dh = dftoggle.checked;
+let dh = dhtoggle.checked;
+let df = dftoggle.checked;
 let rb = rbtoggle.checked;
 let bs = bstoggle.checked;
 let cbt = cbttoggle.checked;
@@ -31,8 +31,8 @@ function GCodds(StoCha, DfDh) {
         odds[3]=chain;
     }
     if(DfDh){
-        odds[8]=df?1:(rb?0.1:0);
-        odds[9]=dh?1:(rb?0.1:0);
+        odds[8]=dh?1:(rb?0.1:0);
+        odds[9]=df?1:(rb?0.1:0);
     }
     return odds;
 } 
@@ -48,8 +48,8 @@ function WCodds(EfStoCha, StoCha, DfDh){
         odds[2]=chain;
     }
     if(DfDh){
+        odds[7]=dh?1:(rb?0.1:0);
         odds[8]=df?1:(rb?0.1:0);
-        odds[9]=dh?1:(rb?0.1:0);
     }
     return odds;
 }
