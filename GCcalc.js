@@ -14,8 +14,8 @@ const altcumtoggle = document.getElementById("altcumtoggle")
 const output = document.getElementById("output")
 
 function calc() {
-    const df = dhtoggle.checked;
-    const dh = dftoggle.checked;
+    const dh = dhtoggle.checked;
+    const df = dftoggle.checked;
     const rb = rbtoggle.checked;
     const bs = bstoggle.checked;
     const cbt = cbttoggle.checked;
@@ -35,8 +35,8 @@ function calc() {
             odds[3]=chain;
         }
         if(DfDh){
-            odds[8]=df?1:(rb?0.1:0);
-            odds[9]=dh?1:(rb?0.1:0);
+            odds[8]=dh?1:(rb?0.1:0);
+            odds[9]=df?1:(rb?0.1:0);
         }
         return odds;
     } 
@@ -52,8 +52,8 @@ function calc() {
             odds[2]=chain;
         }
         if(DfDh){
+            odds[7]=dh?1:(rb?0.1:0);
             odds[8]=df?1:(rb?0.1:0);
-            odds[9]=dh?1:(rb?0.1:0);
         }
         return odds;
     }
